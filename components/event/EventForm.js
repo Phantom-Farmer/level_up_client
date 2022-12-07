@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { getGames } from '../../utils/data/gameData';
-import { createEvent } from '../../utils/data/eventData';
+import { createEvent, updateEvent } from '../../utils/data/eventData';
 
 const EventForm = ({ user, eventObj }) => {
   const initialState = {
@@ -51,7 +51,12 @@ const EventForm = ({ user, eventObj }) => {
       organizer: user.uid,
     };
 
-    createEvent(event).then(() => router.push('/events'));
+    if (eventObj.id) {
+      const gameIncluded = { ...currentEvent, game_id: currentEvent.game };
+      updateEvent(gameIncluded).then(() => router.push('/events'));
+    } else {
+      createEvent(event).then(() => router.push('/events'));
+    }
   };
 
   return (

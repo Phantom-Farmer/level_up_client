@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { createGame, getGameTypes } from '../../utils/data/gameData';
+import { createGame, getGameTypes, updateGame } from '../../utils/data/gameData';
 
 const GameForm = ({ user, gameObj }) => {
   const [gameTypes, setGameTypes] = useState([]);
@@ -54,7 +54,11 @@ const GameForm = ({ user, gameObj }) => {
     };
 
     // Send POST request to your API
-    createGame(game).then(() => router.push('/games'));
+    if (gameObj.id) {
+      updateGame(game, gameObj.id).then(() => router.push('/games'));
+    } else {
+      createGame(game).then(() => router.push('/games'));
+    }
   };
 
   return (

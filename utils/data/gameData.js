@@ -25,4 +25,33 @@ const getGameTypes = () => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 
-export { getGames, createGame, getGameTypes };
+const getSingleGame = (gameId) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/games/${gameId}`)
+    .then((response) => resolve(response.json()))
+    .catch((error) => reject(error));
+});
+
+const updateGame = (data, id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/games/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+    .then((response) => resolve(response))
+    .catch((error) => reject(error));
+});
+
+const deleteGame = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/games/${id}`, {
+    method: 'DELETE',
+  }).then(resolve).catch(reject);
+});
+
+export {
+  getGames,
+  createGame,
+  getGameTypes,
+  getSingleGame,
+  updateGame,
+  deleteGame,
+};

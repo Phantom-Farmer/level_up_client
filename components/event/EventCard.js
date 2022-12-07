@@ -1,40 +1,43 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import { deleteEvent } from '../../utils/data/eventData';
 
-const EventCard = ({
+function EventCard({
+  id,
   game,
-  organizer,
   description,
   date,
   time,
-}) => (
-  <Card className="text-center">
-    <Card.Header>{game.title}</Card.Header>
-    <Card.Body>
-      <Card.Title>By: {organizer.bio}</Card.Title>
-      <Card.Text>{description}</Card.Text>
-    </Card.Body>
-    <Card.Footer className="text-muted">Date/Time: {date} {time}</Card.Footer>
-  </Card>
-);
+  onUpdate,
+}) {
+  const deleteTheEvent = () => {
+    if (window.confirm(`Delete ${description}?`)) {
+      deleteEvent(id).then(() => onUpdate());
+    }
+  };
+
+  return (
+    <Card className="text-center">
+      <Card.Header>{game.title}</Card.Header>
+      <Card.Body>
+        <Card.Subtitle>{date}:{time}</Card.Subtitle>
+        <Card.Text>{description}</Card.Text>
+      </Card.Body>
+      <Button variant="primary" className="m-2" onClick={deleteTheEvent}>Delete Event</Button>
+    </Card>
+  );
+}
 
 EventCard.propTypes = {
   game: PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    maker: PropTypes.string,
-    number_of_players: PropTypes.number,
-    skill_level: PropTypes.number,
+    title: PropTypes.string.isRequired,
   }).isRequired,
-  organizer: PropTypes.shape({
-    id: PropTypes.number,
-    uid: PropTypes.string,
-    bio: PropTypes.string,
-  }).isRequired,
+  id: PropTypes.number.isRequired,
   description: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default EventCard;
