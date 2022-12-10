@@ -10,6 +10,7 @@ const checkUser = (uid) => new Promise((resolve, reject) => {
       uid,
     }),
     headers: {
+      Authorization: uid,
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },

@@ -41,6 +41,26 @@ const deleteEvent = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const joinEvent = (eventId, uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid }),
+  })
+    .then((response) => resolve(response))
+    .catch((error) => reject(error));
+});
+
+const leaveEvent = (eventId, uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/leave`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid }),
+  })
+    .then((response) => resolve(response))
+    .catch((error) => reject(error));
+});
+
 // eslint-disable-next-line import/prefer-default-export
 export {
   getEvents,
@@ -48,4 +68,6 @@ export {
   getSingleEvent,
   updateEvent,
   deleteEvent,
+  joinEvent,
+  leaveEvent,
 };
